@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from GenderOptions import GenderOptions
-from DietaryFrequency import DietaryFrequency
+from models.GenderOptions import GenderOptions
+from models.DietaryFrequency import DietaryFrequency
 
 class FormData(BaseModel):
   #Section 1: General User Data

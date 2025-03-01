@@ -1,7 +1,7 @@
 import os
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
-from backend.app.models.FormData import FormData
+from models.FormData import FormData
 from utils.promptHelper import generatePrompt
 import google.generativeai as genai
 
