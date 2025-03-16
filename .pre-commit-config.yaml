@@ -18,22 +18,23 @@ repos:
     hooks:
       - id: isort
 
-  # --- ESLint for React JS/TS ---
+  # --- ESLint for Frontend ---
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v9.22.0
     hooks:
       - id: eslint
         name: ESLint (Frontend)
         files: ^frontend/
-        args: [--fix, --config=frontend/eslint.config.js]
         types_or: [javascript, jsx, ts, tsx]
+        args: [--fix, --config=./frontend/eslint.config.js]
+        language: node
         additional_dependencies:
-          - eslint@9.3.0
-          - eslint-plugin-react@7.34.1
-          - eslint-plugin-react-hooks@4.6.0
-          - eslint-plugin-react-refresh@0.4.6
-          - '@eslint/js@9.3.0'
-          - globals@13.2.0
+          - npm:eslint@9.3.0
+          - npm:@eslint/js@9.3.0
+          - npm:eslint-plugin-react@7.34.1
+          - npm:eslint-plugin-react-hooks@4.6.0
+          - npm:eslint-plugin-react-refresh@0.4.6
+          - npm:globals@13.2.0
 
   # --- Prettier for non-JS/TS ---
   - repo: https://github.com/pre-commit/mirrors-prettier
