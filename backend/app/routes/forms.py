@@ -1,26 +1,29 @@
-import os
 import asyncio
 import logging
-from dotenv import load_dotenv
-from fastapi import APIRouter, HTTPException
-from backend.app.models.FormData import FormData
-from utils.promptHelper import generatePrompt
-import google.generativeai as genai
+import os
 
-#Load environment variables
+import google.generativeai as genai  # type: ignore
+from app.models.FormData import FormData
+from app.utils.promptHelper import generatePrompt
+from dotenv import load_dotenv  # type: ignore
+from fastapi import APIRouter, HTTPException  # type: ignore
+
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/forms", tags=["forms"])
 
+
 @router.post("/")
 async def analyze_form(formData: FormData):
-  try:
-    if not os.getenv("GEMINI_API_KEY"):
-      raise ValueError("Missing API key configuration")
+  gemini_api_key = os.getenv("GEMINI_API_KEY")
+  if not gemini_api_key:
+    logger.error("Missing API key configuration")
+    raise HTTPException(status_code=401, detail="Missing API key configuration")
 
-    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+  try:
+    genai.configure(api_key=gemini_api_key)
 
     llmPrompt = generatePrompt(formData)
 
@@ -28,16 +31,14 @@ async def analyze_form(formData: FormData):
     response = await asyncio.to_thread(model.generate_content, llmPrompt)
 
     if not response.text:
-      raise ValueError("Empty response from AI model")
+      logger.error("Empty response from AI model")
+      raise HTTPException(status_code=400, detail="Empty response from AI model")
 
-    return {
-      "message": "Form processed successfully",
-      "response": response.text
-    }
+    return {"message": "Form processed successfully", "response": response.text}
 
   except ValueError as ve:
     logger.error(f"Validation error: {str(ve)}")
-    raise HTTPException(status_code=400, detail=str(ve))
+    raise HTTPException(status_code=422, detail=str(ve))
   except genai.errors.GoogleAPIError as ge:
     logger.error(f"Google API error: {str(ge)}")
     raise HTTPException(status_code=503, detail="AI service unavailable")

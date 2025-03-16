@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class GenderOptions(str, Enum):
   heterosexual_female = "Mulher hetero"
   heterosexual_male = "Homem hetero"

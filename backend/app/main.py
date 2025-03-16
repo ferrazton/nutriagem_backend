@@ -1,6 +1,5 @@
-from fastapi import APIRouter
-
-from routes import health, forms
+from fastapi import APIRouter  # type: ignore
+from routes import forms, health
 
 apiRouter = APIRouter()
 apiRouter.include_router(health.router)

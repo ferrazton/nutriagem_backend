@@ -1,14 +1,19 @@
-from models.FormData import FormData
+from app.models.FormData import FormData
+
 
 def generatePrompt(data: FormData) -> str:
   # Map boolean values to "Sim"/"Não"
-  boolToYesNo = lambda x: "Sim" if x else "Não"
-  
+  def boolToYesNo(x):
+    return "Sim" if x else "Não"
+
   # Map enum values to their string representations
-  getEnumValue = lambda x: x.value if x else ""
+  def getEnumValue(x):
+    return x.value if x else ""
 
   prompt = f"""
-  Logo abaixo enviarei dados da resposta de um formulário de um paciente que irá fornecer as suas principais informações de saúde, nutrição, uso de remédios para doenças crônicas, rotina de sono, dentre outros aspectos. O seu objetivo é analisar todas as informações de maneira qualitativa para fornecer um feedback informativo com: possíveis deficiências nutricionais (de vitaminas, minerais, proteínas, etc.), os possíveis riscos de doenças que esse tipo de alimentação ou de rotina pode causar e se necessário, encaminhe o paciente para buscar ajuda com um profissional da área. O objetivo não é substituir o trabalho de médicos nutrólogos ou nutricionistas e sim auxiliar com a fase de triagem e o acompanhamento dos pacientes. Responda sempre levando em consideração a ética.
+  Logo abaixo enviarei dados da resposta de um formulário de um paciente que irá fornecer as suas principais informações de saúde, nutrição, uso de remédios para doenças crônicas, rotina de sono, dentre outros aspectos.
+  O seu objetivo é analisar todas as informações de maneira qualitativa para fornecer um feedback informativo com: possíveis deficiências nutricionais (de vitaminas, minerais, proteínas, etc.), os possíveis riscos de doenças que esse tipo de alimentação ou de rotina pode causar e se necessário, encaminhe o paciente para buscar ajuda com um profissional da área.
+  O objetivo não é substituir o trabalho de médicos nutrólogos ou nutricionistas e sim auxiliar com a fase de triagem e o acompanhamento dos pacientes. Responda sempre levando em consideração a ética.
 
   1. Dados Gerais do Usuário
   Idade: {data.age}
