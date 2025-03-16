@@ -4,7 +4,7 @@ const FormField = ({ label, type = 'text', name, value, onChange, placeholder = 
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}{required && <span className="required">*</span>}</label>
-      
+
       {type === 'textarea' ? (
         <textarea
           id={name}

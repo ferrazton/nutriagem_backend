@@ -14,7 +14,7 @@ const Form = () => {
     state: '',
     city: '',
     family_medical_history: '',
-    
+
     // Section 2: Dietary Habits
     fruits: '',
     vegetables: '',
@@ -30,7 +30,7 @@ const Form = () => {
     lunch_time: '',
     dinner_time: '',
     snack_time: '',
-    
+
     // Section 3: Symptoms
     fatigue: false,
     hair_loss: false,
@@ -42,24 +42,24 @@ const Form = () => {
     tingling_extremities: false,
     difficulty_concentrating: false,
     other_symptoms: '',
-    
+
     // Section 4: Medication
     regular_medication_use: false,
     medications_list: '',
     taking_supplements: false,
     supplements_list: '',
     frequency_dosage: '',
-    
+
     // Section 5: Lifestyle
     physical_activity_frequency: '',
     sleep_hours_per_night: '',
     perceived_stress_level: '',
-    
+
     // Section 6: Preferences
     favorite_foods: '',
     avoided_foods: '',
     dietary_restrictions: '',
-    
+
     // Section 7-9: Goals/Consent/Notes
     nutritional_goal: '',
     consent_given: false,
@@ -77,7 +77,7 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Dados enviados:', formData);
-  
+
     try {
       const response = await axios.post('http://127.0.0.1:8000/forms/', formData, {
         headers: {
@@ -85,7 +85,7 @@ const Form = () => {
         },
         withCredentials: true,
       });
-  
+
       console.log('Ta Aqui a resposta:', response.data);
     } catch (error) {
       console.error('Erro:', error.response ? error.response.data : error.message);
@@ -127,219 +127,219 @@ const Form = () => {
     <form onSubmit={handleSubmit}>
       <h2>Formulário de Avaliação Nutricional</h2>
       <p className="form-description">Preencha os campos abaixo para iniciarmos sua avaliação nutricional personalizada.</p>
-      
+
       {/* Section 1: General User Data */}
       <div className="form-section">
         <h3>Dados Gerais</h3>
-        
-        <FormField 
-          label="Idade" 
-          type="number" 
-          name="age" 
-          value={formData.age} 
-          onChange={handleChange} 
-          required 
+
+        <FormField
+          label="Idade"
+          type="number"
+          name="age"
+          value={formData.age}
+          onChange={handleChange}
+          required
         />
-        
-        <FormField 
-          label="Sexo" 
-          type="select" 
-          name="sex" 
-          value={formData.sex} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Sexo"
+          type="select"
+          name="sex"
+          value={formData.sex}
+          onChange={handleChange}
           options={sexOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Peso (kg)" 
-          type="number" 
-          name="weight_kg" 
-          value={formData.weight_kg} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Peso (kg)"
+          type="number"
+          name="weight_kg"
+          value={formData.weight_kg}
+          onChange={handleChange}
           step="0.1"
           placeholder="Ex: 70.5"
-          required 
+          required
         />
-        
-        <FormField 
-          label="Altura (cm)" 
-          type="number" 
-          name="height_cm" 
-          value={formData.height_cm} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Altura (cm)"
+          type="number"
+          name="height_cm"
+          value={formData.height_cm}
+          onChange={handleChange}
           placeholder="Ex: 170"
-          required 
+          required
         />
-        
-        <FormField 
-          label="Estado" 
-          name="state" 
-          value={formData.state} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Estado"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
         />
-        
-        <FormField 
-          label="Cidade" 
-          name="city" 
-          value={formData.city} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Cidade"
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
         />
-        
-        <FormField 
-          label="Histórico médico familiar" 
-          type="textarea" 
-          name="family_medical_history" 
-          value={formData.family_medical_history} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Histórico médico familiar"
+          type="textarea"
+          name="family_medical_history"
+          value={formData.family_medical_history}
+          onChange={handleChange}
           placeholder="Informe condições médicas presentes na família..."
         />
       </div>
-      
+
       {/* Section 2: Dietary Habits */}
       <div className="form-section">
         <h3>Hábitos Alimentares</h3>
-        
-        <FormField 
-          label="Frutas" 
-          type="select" 
-          name="fruits" 
-          value={formData.fruits} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Frutas"
+          type="select"
+          name="fruits"
+          value={formData.fruits}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Vegetais" 
-          type="select" 
-          name="vegetables" 
-          value={formData.vegetables} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Vegetais"
+          type="select"
+          name="vegetables"
+          value={formData.vegetables}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Grãos" 
-          type="select" 
-          name="grains" 
-          value={formData.grains} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Grãos"
+          type="select"
+          name="grains"
+          value={formData.grains}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Proteínas animais" 
-          type="select" 
-          name="animal_proteins" 
-          value={formData.animal_proteins} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Proteínas animais"
+          type="select"
+          name="animal_proteins"
+          value={formData.animal_proteins}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Proteínas vegetais" 
-          type="select" 
-          name="plant_proteins" 
-          value={formData.plant_proteins} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Proteínas vegetais"
+          type="select"
+          name="plant_proteins"
+          value={formData.plant_proteins}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Laticínios" 
-          type="select" 
-          name="dairy" 
-          value={formData.dairy} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Laticínios"
+          type="select"
+          name="dairy"
+          value={formData.dairy}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Alimentos ultraprocessados" 
-          type="select" 
-          name="ultra_processed_foods" 
-          value={formData.ultra_processed_foods} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Alimentos ultraprocessados"
+          type="select"
+          name="ultra_processed_foods"
+          value={formData.ultra_processed_foods}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Doces" 
-          type="select" 
-          name="sweets" 
-          value={formData.sweets} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Doces"
+          type="select"
+          name="sweets"
+          value={formData.sweets}
+          onChange={handleChange}
           options={dietaryFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Consumo de água (litros/dia)" 
-          type="number" 
-          name="water_intake_liters" 
-          value={formData.water_intake_liters} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Consumo de água (litros/dia)"
+          type="number"
+          name="water_intake_liters"
+          value={formData.water_intake_liters}
+          onChange={handleChange}
           step="0.1"
           placeholder="Ex: 2.5"
-          required 
+          required
         />
-        
-        <FormField 
-          label="Práticas alimentares especiais" 
-          name="special_dietary_practices" 
-          value={formData.special_dietary_practices} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Práticas alimentares especiais"
+          name="special_dietary_practices"
+          value={formData.special_dietary_practices}
+          onChange={handleChange}
           placeholder="Ex: Jejum intermitente, dieta cetogênica..."
         />
-        
+
         <div className="form-group">
           <h4>Horário das Refeições</h4>
-          <FormField 
-            label="Café da manhã" 
-            type="time" 
-            name="breakfast_time" 
-            value={formData.breakfast_time} 
-            onChange={handleChange} 
+          <FormField
+            label="Café da manhã"
+            type="time"
+            name="breakfast_time"
+            value={formData.breakfast_time}
+            onChange={handleChange}
           />
-          
-          <FormField 
-            label="Almoço" 
-            type="time" 
-            name="lunch_time" 
-            value={formData.lunch_time} 
-            onChange={handleChange} 
+
+          <FormField
+            label="Almoço"
+            type="time"
+            name="lunch_time"
+            value={formData.lunch_time}
+            onChange={handleChange}
           />
-          
-          <FormField 
-            label="Jantar" 
-            type="time" 
-            name="dinner_time" 
-            value={formData.dinner_time} 
-            onChange={handleChange} 
+
+          <FormField
+            label="Jantar"
+            type="time"
+            name="dinner_time"
+            value={formData.dinner_time}
+            onChange={handleChange}
           />
-          
-          <FormField 
-            label="Lanches" 
-            type="time" 
-            name="snack_time" 
-            value={formData.snack_time} 
-            onChange={handleChange} 
+
+          <FormField
+            label="Lanches"
+            type="time"
+            name="snack_time"
+            value={formData.snack_time}
+            onChange={handleChange}
           />
         </div>
       </div>
-      
+
       {/* Section 3: Symptoms */}
       <div className="form-section">
         <h3>Sintomas</h3>
         <p className="section-description">Selecione os sintomas que você tem apresentado recentemente:</p>
-        
+
         <div className="checkbox-grid">
           <div className="form-group-checkbox">
             <input
@@ -351,7 +351,7 @@ const Form = () => {
             />
             <label htmlFor="fatigue">Fadiga</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -362,7 +362,7 @@ const Form = () => {
             />
             <label htmlFor="hair_loss">Queda de cabelo</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -373,7 +373,7 @@ const Form = () => {
             />
             <label htmlFor="dry_skin">Pele seca</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -384,7 +384,7 @@ const Form = () => {
             />
             <label htmlFor="vision_problems">Problemas de visão</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -395,7 +395,7 @@ const Form = () => {
             />
             <label htmlFor="brittle_nails">Unhas quebradiças</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -406,7 +406,7 @@ const Form = () => {
             />
             <label htmlFor="appetite_changes">Mudanças no apetite</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -417,7 +417,7 @@ const Form = () => {
             />
             <label htmlFor="muscle_pain">Dor muscular</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -428,7 +428,7 @@ const Form = () => {
             />
             <label htmlFor="tingling_extremities">Formigamento nas extremidades</label>
           </div>
-          
+
           <div className="form-group-checkbox">
             <input
               type="checkbox"
@@ -440,21 +440,21 @@ const Form = () => {
             <label htmlFor="difficulty_concentrating">Dificuldade de concentração</label>
           </div>
         </div>
-        
-        <FormField 
-          label="Outros sintomas" 
-          type="textarea" 
-          name="other_symptoms" 
-          value={formData.other_symptoms} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Outros sintomas"
+          type="textarea"
+          name="other_symptoms"
+          value={formData.other_symptoms}
+          onChange={handleChange}
           placeholder="Descreva quaisquer outros sintomas que você tenha notado..."
         />
       </div>
-      
+
       {/* Section 4: Medication */}
       <div className="form-section">
         <h3>Medicamentos e Suplementos</h3>
-        
+
         <div className="form-group-checkbox">
           <input
             type="checkbox"
@@ -465,18 +465,18 @@ const Form = () => {
           />
           <label htmlFor="regular_medication_use">Uso regular de medicamentos</label>
         </div>
-        
+
         {formData.regular_medication_use && (
-          <FormField 
-            label="Lista de medicamentos" 
-            type="textarea" 
-            name="medications_list" 
-            value={formData.medications_list} 
-            onChange={handleChange} 
+          <FormField
+            label="Lista de medicamentos"
+            type="textarea"
+            name="medications_list"
+            value={formData.medications_list}
+            onChange={handleChange}
             placeholder="Liste os medicamentos que você utiliza regularmente..."
           />
         )}
-        
+
         <div className="form-group-checkbox">
           <input
             type="checkbox"
@@ -487,112 +487,112 @@ const Form = () => {
           />
           <label htmlFor="taking_supplements">Uso de suplementos</label>
         </div>
-        
+
         {formData.taking_supplements && (
           <>
-            <FormField 
-              label="Lista de suplementos" 
-              type="textarea" 
-              name="supplements_list" 
-              value={formData.supplements_list} 
-              onChange={handleChange} 
+            <FormField
+              label="Lista de suplementos"
+              type="textarea"
+              name="supplements_list"
+              value={formData.supplements_list}
+              onChange={handleChange}
               placeholder="Liste os suplementos que você utiliza..."
             />
-            
-            <FormField 
-              label="Frequência e dosagem" 
-              name="frequency_dosage" 
-              value={formData.frequency_dosage} 
-              onChange={handleChange} 
+
+            <FormField
+              label="Frequência e dosagem"
+              name="frequency_dosage"
+              value={formData.frequency_dosage}
+              onChange={handleChange}
               placeholder="Ex: Whey protein - 1 scoop após o treino..."
             />
           </>
         )}
       </div>
-      
+
       {/* Section 5: Lifestyle */}
       <div className="form-section">
         <h3>Estilo de Vida</h3>
-        
-        <FormField 
-          label="Frequência de atividade física" 
-          type="select" 
-          name="physical_activity_frequency" 
-          value={formData.physical_activity_frequency} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Frequência de atividade física"
+          type="select"
+          name="physical_activity_frequency"
+          value={formData.physical_activity_frequency}
+          onChange={handleChange}
           options={activityFrequencyOptions}
-          required 
+          required
         />
-        
-        <FormField 
-          label="Horas de sono por noite" 
-          type="number" 
-          name="sleep_hours_per_night" 
-          value={formData.sleep_hours_per_night} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Horas de sono por noite"
+          type="number"
+          name="sleep_hours_per_night"
+          value={formData.sleep_hours_per_night}
+          onChange={handleChange}
           min="1"
           max="24"
-          required 
+          required
         />
-        
-        <FormField 
-          label="Nível de estresse percebido" 
-          type="select" 
-          name="perceived_stress_level" 
-          value={formData.perceived_stress_level} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Nível de estresse percebido"
+          type="select"
+          name="perceived_stress_level"
+          value={formData.perceived_stress_level}
+          onChange={handleChange}
           options={stressLevelOptions}
-          required 
+          required
         />
       </div>
-      
+
       {/* Section 6: Preferences */}
       <div className="form-section">
         <h3>Preferências Alimentares</h3>
-        
-        <FormField 
-          label="Alimentos favoritos" 
-          type="textarea" 
-          name="favorite_foods" 
-          value={formData.favorite_foods} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Alimentos favoritos"
+          type="textarea"
+          name="favorite_foods"
+          value={formData.favorite_foods}
+          onChange={handleChange}
           placeholder="Liste seus alimentos favoritos..."
         />
-        
-        <FormField 
-          label="Alimentos evitados" 
-          type="textarea" 
-          name="avoided_foods" 
-          value={formData.avoided_foods} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Alimentos evitados"
+          type="textarea"
+          name="avoided_foods"
+          value={formData.avoided_foods}
+          onChange={handleChange}
           placeholder="Liste alimentos que você prefere evitar..."
-          required 
+          required
         />
-        
-        <FormField 
-          label="Restrições alimentares" 
-          type="textarea" 
-          name="dietary_restrictions" 
-          value={formData.dietary_restrictions} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Restrições alimentares"
+          type="textarea"
+          name="dietary_restrictions"
+          value={formData.dietary_restrictions}
+          onChange={handleChange}
           placeholder="Ex: Vegetariano, vegano, sem glúten, sem lactose..."
-          required 
+          required
         />
       </div>
-      
+
       {/* Section 7-9: Goals/Consent/Notes */}
       <div className="form-section">
         <h3>Objetivos e Observações</h3>
-        
-        <FormField 
-          label="Objetivo nutricional" 
-          type="textarea" 
-          name="nutritional_goal" 
-          value={formData.nutritional_goal} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Objetivo nutricional"
+          type="textarea"
+          name="nutritional_goal"
+          value={formData.nutritional_goal}
+          onChange={handleChange}
           placeholder="Descreva seus objetivos nutricionais..."
         />
-        
+
         <div className="form-group-checkbox consent-checkbox">
           <input
             type="checkbox"
@@ -606,17 +606,17 @@ const Form = () => {
             Dou consentimento para o processamento dos meus dados para fins de avaliação nutricional
           </label>
         </div>
-        
-        <FormField 
-          label="Observações adicionais" 
-          type="textarea" 
-          name="additional_notes" 
-          value={formData.additional_notes} 
-          onChange={handleChange} 
+
+        <FormField
+          label="Observações adicionais"
+          type="textarea"
+          name="additional_notes"
+          value={formData.additional_notes}
+          onChange={handleChange}
           placeholder="Compartilhe qualquer informação adicional que considere relevante..."
         />
       </div>
-      
+
       <div className="form-actions">
         <Button type="submit" text="Enviar Formulário" />
       </div>
