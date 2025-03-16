@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "Running tests before pushing..."
+if ! make test; then
+    echo "❌ Tests failed! Push rejected."
+    exit 1
+fi
+echo "✅ All tests passed! Proceeding with push."
+exit 0
