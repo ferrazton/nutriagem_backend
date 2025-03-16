@@ -24,9 +24,8 @@ repos:
     hooks:
       - id: eslint
         name: ESLint (Frontend)
-        files: ^frontend/
+        files: ^frontend/.*\.(js|jsx)$
         args: [--fix, --config=./frontend/eslint.config.js]
-        types_or: [javascript, jsx]
         language: node
         additional_dependencies:
           - npm:eslint@9.22.0
@@ -41,15 +40,14 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        types_or: [json, markdown, yaml]
-        files: \.(json|md|yaml)$
+        files: \.(json|md|yaml|yml)$
+        types: [json, markdown, yaml]
 
   # --- YAML Linting ---
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.36.1
     hooks:
       - id: yamllint
-        types: [yaml]
         files: \.(yaml|yml)$
 
   # --- General Git Hygiene ---
