@@ -29,6 +29,7 @@ repos:
         language: node
         additional_dependencies:
           - npm:eslint@9.22.0
+          - npm:@eslint/eslintrc@3.3.0
           - npm:@eslint/js@9.22.0
           - npm:eslint-plugin-react@7.37.4
           - npm:eslint-plugin-react-hooks@5.2.0
