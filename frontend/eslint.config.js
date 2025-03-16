@@ -1,13 +1,10 @@
-import { FlatCompat } from '@eslint/eslintrc'
 import js from '@eslint/js'
 import globals from 'globals'
+import reactPlugin from 'eslint-plugin-react'
 import reactRefresh from 'eslint-plugin-react-refresh'
-
-const compat = new FlatCompat()
 
 export default [
   js.configs.recommended,
-  ...compat.extends('plugin:react/recommended'),
   {
     files: ['**/*.{js,jsx}'],
     ignores: ['dist/**'],
@@ -22,22 +19,25 @@ export default [
         sourceType: 'module'
       }
     },
+    plugins: {
+      react: reactPlugin,
+      'react-refresh': reactRefresh
+    },
     settings: {
       react: {
         version: 'detect'
       }
     },
-    plugins: {
-      'react-refresh': reactRefresh
-    },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/jsx-uses-react': 'off',
-      'react/jsx-no-target-blank': 'off',
+      ...reactPlugin.configs.recommended.rules,
+      ...reactPlugin.configs['jsx-runtime'].rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
-      ]
+      ],
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'react/jsx-no-target-blank': 'off'
     }
   }
 ]
