@@ -28,13 +28,14 @@ repos:
         args: [--fix, --config=./frontend/eslint.config.js]
         types_or: [javascript, jsx]
         language: node
+        language_version: 22.14.0
         additional_dependencies:
-          - npm:eslint@9.22.0
-          - npm:@eslint/js@9.22.0
-          - npm:eslint-plugin-react@7.37.4
-          - npm:eslint-plugin-react-hooks@5.2.0
-          - npm:eslint-plugin-react-refresh@0.4.19
-          - npm:globals@16.0.0
+          - 'eslint@9.22.0'
+          - '@eslint/js@9.22.0'
+          - 'eslint-plugin-react@7.37.4'
+          - 'eslint-plugin-react-hooks@5.2.0'
+          - 'eslint-plugin-react-refresh@0.4.19'
+          - 'globals@16.0.0'
 
   # --- Prettier for non-JS/TS ---
   - repo: https://github.com/pre-commit/mirrors-prettier
