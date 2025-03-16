@@ -1,3 +1,4 @@
+---
 branches:
   - name: 'main'
     protection:

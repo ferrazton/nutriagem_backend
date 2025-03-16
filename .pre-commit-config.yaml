@@ -1,3 +1,4 @@
+---
 repos:
   # --- Python Linting ---
   - repo: https://github.com/pycqa/flake8
@@ -26,9 +27,11 @@ repos:
         name: ESLint (Frontend)
         files: ^frontend/
         args: [--fix, --config=./frontend/eslint.config.js]
-        types_or: [javascript, jsx]
         language: node
         language_version: 22.14.0
+        pass_filenames: false
+        require_serial: true
+        verbose: true
         additional_dependencies:
           - eslint@9.22.0
           - '@eslint/js@9.22.0'
@@ -36,6 +39,8 @@ repos:
           - eslint-plugin-react-hooks@5.2.0
           - eslint-plugin-react-refresh@0.4.19
           - globals@16.0.0
+          - react@19.0.0
+          - react-dom@19.0.0
 
   # --- Prettier for non-JS/TS ---
   - repo: https://github.com/pre-commit/mirrors-prettier

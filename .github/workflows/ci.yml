@@ -1,3 +1,4 @@
+---
 name: CI Pipeline
 
 on:
@@ -14,10 +15,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.14.0'
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
+
+      # Install frontend dependencies so ESLint config can resolve its packages.
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
 
       - name: Install pre-commit
         run: pip install pre-commit

@@ -1,6 +1,6 @@
-import js from '@eslint/js'
+import js from '@eslint/js/src/index.js'
 import globals from 'globals'
-import reactPlugin from 'eslint-plugin-react'
+import react from 'eslint-plugin-react'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
@@ -10,17 +10,14 @@ export default [
     ignores: ['dist/**'],
     languageOptions: {
       ecmaVersion: 2024,
-      globals: {
-        ...globals.browser,
-        ...globals.es2021
-      },
+      globals: globals.browser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
         sourceType: 'module'
       }
     },
     plugins: {
-      react: reactPlugin,
+      react,
       'react-refresh': reactRefresh
     },
     settings: {
@@ -29,8 +26,7 @@ export default [
       }
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
-      ...reactPlugin.configs['jsx-runtime'].rules,
+      ...react.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
