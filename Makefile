@@ -15,6 +15,7 @@ run:
 test:
 	docker-compose -f $(BACKEND_DIR)/docker-compose.yml run --rm backend sh -c '\
 	  pip install --no-warn-script-location -r requirements-dev.txt && \
+	  export COVERAGE_FILE=/tmp/.coverage && \
 	  export PATH=$$HOME/.local/bin:$$PATH && \
 	  pytest --cov=app --cov-report=term-missing'
 
