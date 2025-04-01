@@ -25,6 +25,7 @@ repos:
     hooks:
       - id: eslint
         name: ESLint (Frontend)
+        entry: npx eslint frontend/
         files: ^frontend/
         args: [--fix, --config=./frontend/eslint.config.js]
         language: node
