@@ -1,14 +1,14 @@
-import asyncio
 import logging
 import os
 
-import google.generativeai as genai  # type: ignore
 from app.models.FormData import FormData
 from app.utils.promptHelper import generatePrompt
 from dotenv import load_dotenv  # type: ignore
 from fastapi import APIRouter, HTTPException  # type: ignore
+from google import genai
+from google.genai import errors  # type: ignore
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +23,11 @@ async def analyze_form(formData: FormData):
     raise HTTPException(status_code=401, detail="Missing API key configuration")
 
   try:
-    genai.configure(api_key=gemini_api_key)
+    client = genai.Client(api_key=gemini_api_key)
 
     llmPrompt = generatePrompt(formData)
 
-    model = genai.GenerativeModel("gemini-1.5-flash")
-    response = await asyncio.to_thread(model.generate_content, llmPrompt)
+    response = await client.aio.models.generate_content(model="gemini-2.0-flash", contents=llmPrompt)
 
     if not response.text:
       logger.error("Empty response from AI model")
@@ -36,12 +35,23 @@ async def analyze_form(formData: FormData):
 
     return {"message": "Form processed successfully", "response": response.text}
 
+  except HTTPException:
+    raise
   except ValueError as ve:
     logger.error(f"Validation error: {str(ve)}")
     raise HTTPException(status_code=422, detail=str(ve))
-  except genai.errors.GoogleAPIError as ge:
+  except errors.APIError as ge:
     logger.error(f"Google API error: {str(ge)}")
     raise HTTPException(status_code=503, detail="AI service unavailable")
   except Exception as e:
-    logger.error(f"Unexpected error: {str(e)}")
+    # Attempt to extract error details if available.
+    error_detail = ""
+    if hasattr(e, "response"):
+      if hasattr(e.response, "body_segments") and isinstance(e.response.body_segments, list) and len(
+          e.response.body_segments) > 0:
+        error_json = e.response.body_segments[0].get("error", {})
+        error_detail = error_json.get("message", str(e))
+    else:
+      error_detail = str(e)
+    logger.error(f"Unexpected error: {error_detail}")
     raise HTTPException(status_code=500, detail="Internal server error")
