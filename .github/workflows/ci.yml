@@ -52,5 +52,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Create backend .env file
+        run: echo "" > backend/.env
+
       - name: Build and run tests
         run: make test  # Runs in a Docker container
