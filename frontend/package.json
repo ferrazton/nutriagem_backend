@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "vite --force --clearScreen false",
+    "build": "vite build --emptyOutDir",
+    "prebuild": "rm -rf dist/.vite",
+    "lint": "eslint . --ext .js,.jsx",
+    "preview": "vite preview --host localhost --port 3000"
   },
   "dependencies": {
     "axios": "^1.8.1",

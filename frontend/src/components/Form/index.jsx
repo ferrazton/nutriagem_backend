@@ -68,9 +68,13 @@ const Form = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
+    let newValue = value
+    if (type === 'number') {
+      newValue = value === '' ? '' : Number(value)
+    }
     setFormData(prevState => ({
       ...prevState,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : newValue
     }))
   }
 
