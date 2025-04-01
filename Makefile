@@ -1,6 +1,7 @@
-.PHONY: run test build lint lint-python lint-frontend setup-dev setup-hooks
-
+.PHONY: run test build lint setup-dev setup-hooks clean
 BACKEND_DIR := backend
+FRONTEND_DIR := frontend
+VENV := venv
 
 # Build the Docker image (using the backend's docker-compose file)
 build:
@@ -10,30 +11,41 @@ build:
 run:
 	docker-compose -f $(BACKEND_DIR)/docker-compose.yml up
 
-# Run the tests inside the Docker container
+# Run the tests inside the Docker container (installing dev deps first)
 test:
-	docker-compose -f $(BACKEND_DIR)/docker-compose.yml run --rm backend pytest --cov=app --cov-report=term-missing
+	docker-compose -f $(BACKEND_DIR)/docker-compose.yml run --rm backend sh -c '\
+	  pip install --no-warn-script-location -r requirements-dev.txt && \
+	  export PATH=$$HOME/.local/bin:$$PATH && \
+	  pytest --cov=app --cov-report=term-missing'
 
-# Lint both Python and Frontend files
-lint: lint-python lint-frontend
-
-# Lint Python files (inside the backend folder)
-lint-python:
+# Run all linters
+lint:
 	flake8 $(BACKEND_DIR)
-
-# Lint Frontend JS files
-lint-frontend:
-	pre-commit run eslint --files frontend/**/*.{js,jsx}
+	pre-commit run --all-files
 
 # Set up the development environment (Python & pre-commit)
 setup-dev:
-	python -m venv venv
-	. venv/bin/activate && pip install pre-commit
-	pre-commit install
-	pre-commit autoupdate
-	@echo "Note: Node.js/npm must be installed separately for frontend linting."
+	@echo "Setting up backend environment..."
+	@cd $(BACKEND_DIR) && \
+		python3 -m venv $(VENV) && \
+		. $(VENV)/bin/activate && \
+		pip install --no-warn-script-location -q -r requirements-dev.txt && \
+		pre-commit install && \
+		pre-commit autoupdate
+	@echo "\nSetting up frontend environment..."
+	@cd $(FRONTEND_DIR) && \
+		npm install
+	@echo "\nDevelopment environment setup complete!"
 
 # Install git hooks (from a hooks directory at the repo root)
 setup-hooks:
-	cp hooks/pre-push .git/hooks/pre-push
-	chmod +x .git/hooks/pre-push
+	@cp hooks/pre-push .git/hooks/pre-push
+	@chmod +x .git/hooks/pre-push
+	@echo "Git hooks installed"
+
+# Clean temporary files and containers
+clean:
+	docker-compose -f $(BACKEND_DIR)/docker-compose.yml down -v
+	@rm -rf $(BACKEND_DIR)/$(VENV) $(BACKEND_DIR)/.coverage $(FRONTEND_DIR)/node_modules
+	@find . -name '__pycache__' -exec rm -rf {} +
+	@echo "Cleaned all temporary files"
