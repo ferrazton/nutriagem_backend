@@ -5,8 +5,7 @@ from app.models.DietaryFrequency import DietaryFrequency
 from app.models.GenderOptions import GenderOptions
 from fastapi.testclient import TestClient  # type: ignore
 from google import genai
-from google.genai import errors  # type: ignore
-from tests.helpers import (DummyAPIResponse, DummyAsyncModels, DummyClient,
+from tests.helpers import (APIErrorFactory, DummyAsyncModels, DummyClient,
                            DummyResponse)
 
 client = TestClient(app)
@@ -112,7 +111,7 @@ def test_analyze_form_invalid_payload():
 def test_analyze_form_google_api_error(monkeypatch: pytest.MonkeyPatch):
 
   async def raise_api_error(self, model: str, contents: str):
-    raise errors.APIError(404, response=DummyAPIResponse())
+    raise APIErrorFactory.create_google_api_error(404)
 
   monkeypatch.setattr(DummyAsyncModels, "generate_content", raise_api_error)
   response = client.post("/forms/", json=valid_payload)

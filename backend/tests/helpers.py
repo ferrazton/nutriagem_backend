@@ -1,4 +1,5 @@
 # tests/helpers.py
+from google.genai import errors  # type: ignore
 
 
 class DummyResponse:
@@ -34,5 +35,31 @@ class DummyClient:
 
 class DummyAPIResponse:
 
-  def __init__(self):
-    self.body_segments = [{"error": {"code": 404, "message": "dummy error message", "status": "dummy status"}}]
+  def __init__(self, status_code: int = 404):
+    self.body_segments = [{
+      "error": {
+        "code": status_code,
+        "message": f"dummy error message for {status_code}",
+        "status": f"dummy status {status_code}"
+      }
+    }]
+    self.status_code = status_code
+
+  @property
+  def response_json(self):
+    return {
+      "error": self.body_segments[0]["error"]
+    }
+
+class APIErrorFactory:
+
+  @staticmethod
+  def create_google_api_error(status_code: int = 404):
+    """Helper to create properly configured APIError instances"""
+    response = DummyAPIResponse(status_code)
+    return errors.APIError(
+      status_code=status_code,
+      message=response.body_segments[0]["error"]["message"],
+      response=response,
+      response_json=response.response_json
+    )
