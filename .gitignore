@@ -1,3 +1,6 @@
 venv/
 __pycache__/
 .dist/
+.vscode/
+node_modules/
+package-lock.json

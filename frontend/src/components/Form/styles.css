@@ -115,9 +115,9 @@ input[type="checkbox"] {
 }
 
 .popup-content {
-  padding: 24px;
+  padding: 20px;
+  max-height: 70vh;
   overflow-y: auto;
-  max-height: calc(90vh - 140px);
 }
 
 .result-title {
@@ -226,30 +226,80 @@ input[type="checkbox"] {
   background-color: #e0e0e0;
 }
 
+/* Markdown styles */
+.popup-content h2 {
+  color: #2c3e50;
+  margin: 1.5em 0 0.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid #3498db;
+}
+
+.popup-content h3 {
+  color: #34495e;
+  margin: 1.2em 0 0.5em;
+}
+
+.popup-content h4 {
+  color: #2c3e50;
+  margin: 1em 0 0.5em;
+}
+
+.popup-content p {
+  margin: 0.8em 0;
+  line-height: 1.6;
+  color: #2c3e50;
+}
+
+.popup-content ul {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.popup-content li {
+  margin: 0.3em 0;
+  line-height: 1.5;
+}
+
+.popup-content strong {
+  color: #2980b9;
+}
+
+.popup-content em {
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+.popup-content blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 4px solid #3498db;
+  color: #7f8c8d;
+}
+
 /* Make it responsive for mobile screens */
 @media (max-width: 768px) {
   .popup-container {
     width: 95%;
     max-height: 95vh;
   }
-  
+
   .popup-header {
     padding: 16px 20px;
   }
-  
+
   .popup-header h2 {
     font-size: 20px;
   }
-  
+
   .popup-content {
     padding: 16px;
   }
-  
+
   .popup-footer {
     padding: 12px 16px;
     flex-wrap: wrap;
   }
-  
+
   .action-button {
     padding: 8px 16px;
     font-size: 14px;

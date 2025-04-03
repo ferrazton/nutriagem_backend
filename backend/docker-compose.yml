@@ -1,0 +1,11 @@
+---
+services:
+  backend:
+    build: .
+    container_name: nutriagram_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env  # Load environment variables from .env
+    volumes:
+      - .:/app

@@ -1,5 +1,5 @@
-import React from 'react'
 import './styles.css'
+import PropTypes from 'prop-types'
 
 const Button = ({ type = 'button', text, onClick, className = '', disabled = false }) => {
   return (
@@ -12,6 +12,13 @@ const Button = ({ type = 'button', text, onClick, className = '', disabled = fal
       {text}
     </button>
   )
+}
+Button.propTypes = {
+  type: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 export default Button

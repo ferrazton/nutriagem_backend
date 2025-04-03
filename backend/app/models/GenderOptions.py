@@ -1,6 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
-class GenderOptions(str, Enum):
+
+class GenderOptions(StrEnum):
   heterosexual_female = "Mulher hetero"
   heterosexual_male = "Homem hetero"
   trans_female = "Mulher trans"
