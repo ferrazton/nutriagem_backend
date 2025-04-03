@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import ReactMarkdown from 'react-markdown'
 import FormField from './FormField'
 import Button from '../Button'
 import './styles.css'
@@ -17,34 +18,7 @@ const NutritionResultsPopup = ({ isOpen, onClose, results }) => {
         </div>
 
         <div className="popup-content">
-          {results.title && (
-            <div className="result-title">
-              <h3>{results.title}</h3>
-              {results.greeting && <p className="greeting">{results.greeting}</p>}
-            </div>
-          )}
-
-          <div className="results-sections">
-            {results.sections && results.sections.map((section, index) => (
-              <div key={index} className="result-section">
-                <h4>{section.title}</h4>
-                <div className="section-content">
-                  {section.content.map((item, i) => (
-                    <p key={i} className={item.includes("**Pontos Positivos:**") ? "positive-point" :
-                               item.includes("**Pontos de Atenção:**") ? "attention-point" : ""}>
-                      {item}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="popup-footer">
-          <button className="action-button close-action" onClick={onClose}>
-            Fechar
-          </button>
+          <ReactMarkdown>{results.response}</ReactMarkdown>
         </div>
       </div>
     </div>
@@ -55,49 +29,8 @@ NutritionResultsPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   results: PropTypes.shape({
-    title: PropTypes.string,
-    greeting: PropTypes.string,
-    sections: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        content: PropTypes.arrayOf(PropTypes.string).isRequired
-      })
-    )
+    response: PropTypes.string
   })
-};
-
-NutritionResultsPopup.defaultProps = {
-  results: null
-};
-
-const parseNutritionResults = (responseData) => {
-  const sections = [];
-  let currentSection = null;
-
-  const title = responseData.title || "Análise Qualitativa das Informações do Paciente";
-  const greeting = responseData.greeting || "Agradecemos por compartilhar suas informações detalhadas.";
-
-  const lines = responseData.split('\n');
-
-  lines.forEach(line => {
-    if (line.includes('**') && line.includes(':')) {
-      if (currentSection) {
-        sections.push(currentSection);
-      }
-      currentSection = {
-        title: line.trim(),
-        content: []
-      };
-    } else if (currentSection && line.trim()) {
-      currentSection.content.push(line.trim());
-    }
-  });
-
-  if (currentSection) {
-    sections.push(currentSection);
-  }
-
-  return { title, greeting, sections };
 };
 
 const Form = () => {
@@ -188,8 +121,8 @@ const Form = () => {
         withCredentials: true,
       });
 
-      console.log('Ta Aqui a resposta:', response.data);
-      setAnalysisResults(parseNutritionResults(response.data))
+      console.log('Resposta:', response.data);
+      setAnalysisResults(response.data);
       setShowPopup(true);
     } catch (error) {
       console.error('Erro:', error.response ? error.response.data : error.message);
