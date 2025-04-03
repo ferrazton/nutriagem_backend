@@ -1,16 +1,11 @@
 # tests/helpers.py
-import json
-
 from google.genai import errors  # type: ignore
 
 
 class DummyResponse:
 
-  def __init__(self, text: str, valid_json: bool = True):
-    if valid_json:
-      self.text = json.dumps({"analysis": text})
-    else:
-      self.text = text
+  def __init__(self, text: str):
+    self.text = text
 
 
 class DummyAsyncModels:

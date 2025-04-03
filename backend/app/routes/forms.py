@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 
@@ -11,6 +10,7 @@ from google.genai import errors  # type: ignore
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/forms", tags=["forms"])
@@ -35,12 +35,6 @@ async def analyze_form(formData: FormData):
     if not response.text:
       logger.error("Empty response from AI model")
       raise HTTPException(status_code=400, detail="Empty response from AI model")
-
-    # Validate JSON format
-    try:
-      json.loads(response.text)
-    except json.JSONDecodeError as jde:
-      raise ValueError(f"Invalid AI response format: {str(jde)}")
 
     return {"message": "Form processed successfully", "response": response.text}
 

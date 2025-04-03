@@ -1,6 +1,4 @@
 # tests/test_forms.py
-import json
-
 import pytest
 from app.main import app
 from app.models.DietaryFrequency import DietaryFrequency
@@ -82,9 +80,7 @@ def test_analyze_form_success():
   assert response.status_code == 200
   data = response.json()
   assert data.get("message") == "Form processed successfully"
-  # Parse the JSON response
-  response_content = json.loads(data["response"])
-  assert response_content["analysis"] == "Dummy AI response"
+  assert "Dummy AI response" in data["response"]
 
 
 def test_analyze_form_missing_api_key(monkeypatch: pytest.MonkeyPatch):
@@ -97,7 +93,7 @@ def test_analyze_form_missing_api_key(monkeypatch: pytest.MonkeyPatch):
 def test_analyze_form_empty_response(monkeypatch: pytest.MonkeyPatch):
 
   async def empty_generate_content(self, model: str, contents: str):
-    return DummyResponse("", valid_json=False)
+    return DummyResponse("")
 
   monkeypatch.setattr(DummyAsyncModels, "generate_content", empty_generate_content)
   response = client.post("/forms/", json=valid_payload)
@@ -132,17 +128,6 @@ def test_analyze_form_unexpected_error(monkeypatch: pytest.MonkeyPatch):
   response = client.post("/forms/", json=valid_payload)
   assert response.status_code == 500
   assert "Internal server error" in response.json().get("detail")
-
-
-def test_analyze_form_invalid_ai_response(monkeypatch: pytest.MonkeyPatch):
-
-  async def bad_response(self, model: str, contents: str):
-    return DummyResponse("{invalid_json", valid_json=False)
-
-  monkeypatch.setattr(DummyAsyncModels, "generate_content", bad_response)
-  response = client.post("/forms/", json=valid_payload)
-  assert response.status_code == 422
-  assert "Invalid AI response format" in response.json().get("detail")
 
 
 def test_medication_validation():
