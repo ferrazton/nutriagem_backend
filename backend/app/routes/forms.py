@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 
@@ -26,12 +27,20 @@ async def analyze_form(formData: FormData):
     client = genai.Client(api_key=gemini_api_key)
 
     llmPrompt = generatePrompt(formData)
-
-    response = await client.aio.models.generate_content(model="gemini-2.0-flash", contents=llmPrompt)
+    response = await client.aio.models.generate_content(
+      model="gemini-2.0-flash",
+      contents=llmPrompt
+    )
 
     if not response.text:
       logger.error("Empty response from AI model")
       raise HTTPException(status_code=400, detail="Empty response from AI model")
+
+    # Validate JSON format
+    try:
+      json.loads(response.text)
+    except json.JSONDecodeError as jde:
+      raise ValueError(f"Invalid AI response format: {str(jde)}")
 
     return {"message": "Form processed successfully", "response": response.text}
 
@@ -44,7 +53,6 @@ async def analyze_form(formData: FormData):
     logger.error(f"Google API error: {str(ge)}")
     raise HTTPException(status_code=503, detail="AI service unavailable")
   except Exception as e:
-    # Attempt to extract error details if available.
     error_detail = ""
     if hasattr(e, "response"):
       if hasattr(e.response, "body_segments") and isinstance(e.response.body_segments, list) and len(

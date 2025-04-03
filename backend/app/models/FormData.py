@@ -1,7 +1,7 @@
 from typing import Any, Union
 
 from pydantic import Field  # type: ignore
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator  # type: ignore
 
 from .DietaryFrequency import DietaryFrequency
 from .GenderOptions import GenderOptions

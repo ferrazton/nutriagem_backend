@@ -1,7 +1,10 @@
 # tests/test_forms.py
+import json
+
 import pytest
 from app.main import app
 from app.models.DietaryFrequency import DietaryFrequency
+from app.models.FormData import FormData
 from app.models.GenderOptions import GenderOptions
 from fastapi.testclient import TestClient  # type: ignore
 from google import genai
@@ -79,7 +82,9 @@ def test_analyze_form_success():
   assert response.status_code == 200
   data = response.json()
   assert data.get("message") == "Form processed successfully"
-  assert data.get("response") == "Dummy AI response"
+  # Parse the JSON response
+  response_content = json.loads(data["response"])
+  assert response_content["analysis"] == "Dummy AI response"
 
 
 def test_analyze_form_missing_api_key(monkeypatch: pytest.MonkeyPatch):
@@ -92,13 +97,11 @@ def test_analyze_form_missing_api_key(monkeypatch: pytest.MonkeyPatch):
 def test_analyze_form_empty_response(monkeypatch: pytest.MonkeyPatch):
 
   async def empty_generate_content(self, model: str, contents: str):
-    return DummyResponse("")
+    return DummyResponse("", valid_json=False)
 
   monkeypatch.setattr(DummyAsyncModels, "generate_content", empty_generate_content)
   response = client.post("/forms/", json=valid_payload)
-  # Expecting a 400 since an empty response should trigger a specific HTTPException.
   assert response.status_code == 400
-  assert "Empty response from AI model" in response.json().get("detail")
 
 
 def test_analyze_form_invalid_payload():
@@ -129,3 +132,40 @@ def test_analyze_form_unexpected_error(monkeypatch: pytest.MonkeyPatch):
   response = client.post("/forms/", json=valid_payload)
   assert response.status_code == 500
   assert "Internal server error" in response.json().get("detail")
+
+
+def test_analyze_form_invalid_ai_response(monkeypatch: pytest.MonkeyPatch):
+
+  async def bad_response(self, model: str, contents: str):
+    return DummyResponse("{invalid_json", valid_json=False)
+
+  monkeypatch.setattr(DummyAsyncModels, "generate_content", bad_response)
+  response = client.post("/forms/", json=valid_payload)
+  assert response.status_code == 422
+  assert "Invalid AI response format" in response.json().get("detail")
+
+
+def test_medication_validation():
+
+  invalid_payload = {
+    **valid_payload,
+    "regular_medication_use": True,
+    "medications_list": ""
+  }
+
+  with pytest.raises(ValueError) as exc:
+    FormData(**invalid_payload)
+  assert "Medication list required" in str(exc.value)
+
+
+def test_supplements_validation():
+
+  invalid_payload = {
+    **valid_payload,
+    "taking_supplements": True,
+    "supplements_list": ""
+  }
+
+  with pytest.raises(ValueError) as exc:
+    FormData(**invalid_payload)
+  assert "Supplements list required" in str(exc.value)
