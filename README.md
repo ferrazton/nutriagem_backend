@@ -33,17 +33,24 @@ A web application developed for the Software Development course at CIn/UFPE (202
 - **Python 3.12**
 - FastAPI (REST API framework)
 - Pydantic (Data validation)
-- Google Generative AI (AI analysis)
+- Google Generative AI (Gemini AI analysis)
 - Uvicorn (ASGI server)
-- Docker (Containerization)
+- Docker & Docker Compose (Containerization)
+- Python-dotenv (Environment management)
+- Pre-commit hooks (Code quality)
+- YAPF (Code formatting)
+- Flake8 (Code linting)
+- Pytest (Testing)
 
 ### Frontend
 
 - React (UI framework)
 - Axios (HTTP client)
 - HTML5/CSS3
-- EsLint (Code quality)
+- React Markdown (Markdown rendering)
+- ESLint & Prettier (Code quality)
 - Vite (Build tool)
+- PropTypes (Type checking)
 
 ## System Requirements
 
@@ -53,30 +60,47 @@ A web application developed for the Software Development course at CIn/UFPE (202
 - Docker Compose 1.29+
 - npm 9+
 - Google API Key (for Gemini integration)
+- Git (for version control)
+- Make (for Makefile commands)
 
 ## Installation Guide
 
 ### 1. Clone Repository
 
 ```bash
-  git clone https://github.com/lucasmoraismt/nutriagem.git
-  cd nutriagem
+git clone https://github.com/lucasmoraismt/nutriagem.git
+cd nutriagem
 ```
 
 ### 2. Backend Setup
 
 ```bash
+# Create and activate virtual environment
 cd backend
 
-# Build and start the Docker containers
-docker-compose up --build
+# Install dependencies and pre-commit hooks
+python3 -m venv venv
+source venv/bin/activate
+cd ..
+
+# Setup pre-commit hooks & install dependencies
+make setup-dev
+make setup-hooks
+
+# Build and start the Docker container
+make run
 ```
 
 ### 3. Frontend Setup
 
 ```bash
-  cd ../frontend
-  npm install
+cd ./frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
 ## Configuration
@@ -84,7 +108,7 @@ docker-compose up --build
 ### 1. Create .env file in backend folder
 
 ```env
-  GEMINI_API_KEY=your_google_api_key_here
+GEMINI_API_KEY=your_google_api_key_here
 ```
 
 ### 2. Enable CORS in frontend (update src/config.js)
